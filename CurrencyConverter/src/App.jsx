@@ -12,9 +12,12 @@ function App() {
   const currencyInfo = useCurrencyInfo(from);
   const options = Object.keys(currencyInfo);
 
-  const swap = () => {
+  const swapCurr = () => {
     setFrom(to)
     setTo(from)
+  }
+
+  const swapAmount = () => {
     setConvertedAmount(amount)
     setAmount(convertedAmount)
   }
@@ -54,8 +57,16 @@ function App() {
                         <div className="relative w-full h-0.5">
                             <button
                                 type="button"
-                                className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-green-400 text-white px-2 py-0.5"
-                                onClick={swap}
+                                className="absolute left-1/7 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-green-400 text-white px-2 py-0.5"
+                                onClick={swapAmount}
+                            >
+                                swap
+                            </button>
+
+                            <button
+                                type="button"
+                                className="absolute right-1/15 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-green-400 text-white px-2 py-0.5"
+                                onClick={swapCurr}
                             >
                                 swap
                             </button>
