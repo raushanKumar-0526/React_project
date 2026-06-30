@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 import AddTodo from './Components/AddTodo'
 import { TodoProvider } from './Context/TodoContext'
+import TodoItem from './Components/TodoItem'
 
 function App() {
   const [todos, setTodos] = useState([])
 
   const addTodo = (todo) => {
-    setTodos((prev) => [...prev, {id: Date.now(),...todo}])
+    setTodos((prev) => [...prev, {id: Date.now(), ...todo}])
   }
 
   const updateTodo = (id,todo) => {
@@ -22,10 +20,20 @@ function App() {
   }
 
   const toggleComplete = (id) => {
-    setTodos((prev) => prev.filter((prevtodo) => prevtodo.id === id ? {...prevtodo, complete : !prevtodo.complete} : prevtodo))
+    setTodos((prev) => prev.map((prevtodo) => prevtodo.id === id ? {...prevtodo, completed : !(prevtodo.completed)} : prevtodo))
   }
 
-  useEffect(() => {}, [todos])
+  useEffect(() => {
+    const todos = JSON.parse(localStorage.getItem("todos"))
+
+    if (todos && todos.length > 0) {
+      setTodos(todos)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
 
   return (
     <TodoProvider value={ {todos,addTodo,updateTodo,deleteTodo,toggleComplete}}>
@@ -36,7 +44,13 @@ function App() {
               <AddTodo />
           </div>
           <div className="flex flex-wrap gap-y-3">
-              {/*Loop and Add TodoItem here */}
+              {todos.map((todo) => (
+                <div key={todo.id}
+                className='w-full'
+                >
+                  <TodoItem todo={todo} />
+                </div>
+              ))}
           </div>
       </div>
     </div>
